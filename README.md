@@ -3,43 +3,33 @@
 > 🚀 新一代PHP Excel处理库 - 高性能、低内存、易使用
 
 [![PHP Version](https://img.shields.io/badge/php-%3E%3D8.1-8892BF.svg)](https://php.net/)
-[![Tests](https://img.shields.io/badge/tests-148%20passed-green.svg)](tests/)
-[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](tests/)
-[![Performance](https://img.shields.io/badge/performance-5x%20faster-blue.svg)](#性能对比)
-[![Memory](https://img.shields.io/badge/memory-6x%20less-orange.svg)](#内存优化)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Performance](https://img.shields.io/badge/performance-5x%20faster-green.svg)](#性能表现)
+[![Memory](https://img.shields.io/badge/memory-流式处理-orange.svg)](#内存优化)
 
-## ✨ 特性
+## ✨ 核心特性
 
-### 🔥 核心优势
-- **极致性能**: 比PhpSpreadsheet快5倍，内存节省6倍
-- **流式处理**: 内存使用与文件大小解耦，处理GB级文件仅需MB内存
-- **易用API**: 链式调用，Laravel风格的优雅API
-- **框架集成**: 深度集成Laravel，支持Facade和依赖注入
-- **智能检测**: 自动文件格式和数据类型检测
-- **完整功能**: 样式、公式、图表、多工作表全支持
+### 🚀 超高性能
+- **极速处理**: 比PhpSpreadsheet快5倍以上
+- **流式架构**: 内存使用与文件大小完全解耦
+- **智能调优**: 自动检测数据量并优化处理策略
+- **百万数据**: 轻松处理100万+条数据，内存使用恒定
 
-### 🎯 设计理念
-- **性能优先**: 流式处理 + 对象池 + 智能缓存
-- **开发体验**: 简洁API + 完整文档 + 丰富示例
-- **生产就绪**: 企业级稳定性 + 完整测试覆盖
-- **生态友好**: 框架集成 + 标准化接口
+### 💡 易用设计
+- **链式API**: Laravel风格的优雅链式调用
+- **智能检测**: 自动识别文件格式和数据类型
+- **框架集成**: 深度支持Laravel、WebMan、ThinkPHP
+- **丰富示例**: 13个实用示例覆盖各种场景
+
+### 🛠️ 完整功能
+- **多格式支持**: CSV、XLSX读写
+- **样式控制**: 字体、颜色、边框等完整样式
+- **数据库集成**: 直接从数据库导入导出
+- **进度显示**: 内置进度条，实时显示处理状态
 
 ## 📊 性能测试报告
 
-### 🎯 测试环境
-- **PHP版本**: 8.3.17
-- **操作系统**: macOS (Darwin)
-- **内存限制**: 自动调优 (128M → 512M)
-- **测试时间**: 2025-06-20
-
-### 🚀 核心优势验证
-
-✅ **真正的流式处理**: 内存使用与数据量完全解耦  
-✅ **智能自动调优**: 根据数据量自动调整系统配置  
-✅ **高复用架构**: 统一的进度管理和内存监控  
-✅ **企业级性能**: 100万条数据稳定处理  
-
-### 📈 详细测试结果
+### 🏆 测试结果概览
 
 | 数据量 | 导出速度(CSV) | 导出速度(XLSX) | 导入速度(CSV) | 导入速度(XLSX) | 内存峰值 | 状态 |
 |--------|---------------|----------------|---------------|----------------|----------|------|
@@ -48,44 +38,27 @@
 | 110K条 | 77,079条/秒   | 72,242条/秒    | 113,430条/秒  | 110,503条/秒   | 84 MB    | ✅优秀 |
 | 100万条| 64,289条/秒   | 68,807条/秒    | 140,466条/秒  | 124,924条/秒   | 317.3 MB | ✅完美 |
 
-### 🔥 性能亮点
+### 🚀 核心亮点
 
-#### 📊 100万条数据处理表现
+#### 💪 百万数据处理能力
 - **文件大小**: 235.2 MB
-- **总耗时**: 45.38秒
+- **总耗时**: 45.38秒  
 - **导出速度**: 64K-68K条/秒
 - **导入速度**: 124K-140K条/秒
 - **内存使用**: 流式处理，内存恒定
 - **数据完整性**: 100%准确 (1,000,001条含表头)
 
-#### 🚀 自动调优特性
+#### ⚡ 智能自动调优
+系统自动检测大数据处理需求，无需手动配置即可处理任意大小的文件：
 ```
 🚀 自动调优: PHP内存限制已从 128M 提高到 512M
 ```
-系统自动检测大数据处理需求，无需手动配置即可处理任意大小的文件。
 
-#### 💡 内存优化成果
+#### 🎯 真正的流式处理
 所有测试中均显示 **"流式处理，内存恒定"**，证明内存使用与数据量完全解耦：
-- 1K条数据：内存恒定
-- 100万条数据：内存恒定
-- **处理方式与数据量无关**
-
-### 🎯 设计原则验证
-
-✅ **"数据是变量，方式是常量"**  
-- 用户只需传递数据（SQL查询、文件路径）
-- 所有优化策略（流式处理、内存管理、进度显示）在内部自动处理
-
-✅ **高复用设计**  
-- ProgressReporter、MemoryManager等组件统一复用
-- 无重复代码，API简洁一致
-
-✅ **企业级可扩展性**  
-- 100万条数据处理成功率100%
-- 内存使用可预测且稳定
-- 自动错误恢复和资源管理
-
----
+- **处理方式与数据量无关**: 1K条和100万条数据使用相同的API
+- **内存使用可预测**: 无论数据量大小，内存消耗保持稳定
+- **企业级稳定性**: 100万条数据处理成功率100%
 
 ## 📦 安装
 
@@ -96,58 +69,105 @@ composer require lkexcel/lkexportexcel
 ### 系统要求
 - PHP >= 8.1
 - ext-xml
-- ext-zip (可选，用于XLSX支持)
+- ext-zip (XLSX支持，可选)
 
 ## 🚀 快速开始
 
-### 基础用法
+### 基础读取
 
 ```php
-use LkExcel\LkExportExcel\LkExportExcel;
+use LkExcel\LkExportExcel\Api\Reader;
 
-// 读取Excel文件
-$data = LkExportExcel::read('data.xlsx')
-    ->headers(true)           // 包含表头
-    ->limit(100)             // 限制100行
+// 简单读取
+$reader = new Reader();
+$data = $reader->read('data.xlsx')->toArray();
+
+// 链式操作
+$data = $reader->read('users.csv')
+    ->headers(true)                    // 包含表头
+    ->limit(100)                      // 只读100行
     ->filter(fn($row) => $row['age'] > 18)  // 过滤数据
-    ->toArray();             // 转为数组
+    ->toArray();
 
-// 写入Excel文件
-LkExportExcel::write()
+// 流式处理大文件
+foreach ($reader->read('large.xlsx')->stream() as $row) {
+    // 逐行处理，内存恒定
+    processRow($row);
+}
+```
+
+### 基础写入
+
+```php
+use LkExcel\LkExportExcel\Api\Writer;
+
+$writer = new Writer();
+
+// 简单写入
+$writer->startWrite('output.xlsx')
     ->writeHeaders(['姓名', '年龄', '部门'])
     ->writeRows([
         ['张三', 25, '技术部'],
         ['李四', 30, '产品部'],
     ])
-    ->setStyle('A1:C1', ['font' => ['bold' => true]])
-    ->save('output.xlsx');
-```
+    ->finishWrite();
 
-### 流式处理大文件
+// 流式写入大量数据
+$writer->startWrite('large.csv')
+    ->writeHeaders(['ID', '数据', '时间']);
 
-```php
-// 处理大文件，内存使用恒定
-foreach (LkExportExcel::read('large.xlsx')->stream() as $row) {
-    // 逐行处理数据
-    processRow($row);
+for ($i = 0; $i < 1000000; $i++) {
+    $writer->writeRow([$i, "数据{$i}", date('Y-m-d H:i:s')]);
 }
 
-// 流式写入
-$writer = LkExportExcel::write();
-$writer->streamWrite(function() {
-    for ($i = 0; $i < 1000000; $i++) {
-        yield ["数据{$i}", $i, time()];
-    }
-}());
-$writer->save('large_output.xlsx');
+$writer->finishWrite();
+```
+
+### 数据库集成
+
+```php
+// 直接从数据库导出
+$pdo = new PDO('mysql:host=localhost;dbname=test', $user, $pass);
+
+$writer = new Writer();
+$writer->startWrite('users.xlsx')
+    ->fromDatabase($pdo, 'SELECT * FROM users ORDER BY id')
+    ->finishWrite();
+
+// 大量数据导出 - 系统自动分批处理
+$writer->startWrite('million_data.csv')
+    ->fromDatabase($pdo, 'SELECT * FROM large_table')  // 100万条数据
+    ->finishWrite();  // 内存使用恒定
+```
+
+### 格式转换
+
+```php
+use LkExcel\LkExportExcel\Api\Converter;
+
+$converter = new Converter();
+
+// CSV转XLSX
+$converter->convert('data.csv', 'data.xlsx');
+
+// XLSX转CSV (支持大文件)
+$converter->convert('large.xlsx', 'large.csv');
+
+// 批量转换
+$converter->batchConvert([
+    'file1.csv' => 'file1.xlsx',
+    'file2.xlsx' => 'file2.csv'
+]);
 ```
 
 ## 🔌 框架集成
 
-### Laravel集成
+### Laravel
+
+#### 1. 安装服务提供者
 
 ```php
-// 1. 安装服务提供者 (config/app.php)
+// config/app.php
 'providers' => [
     LkExcel\LkExportExcel\Integration\Laravel\LkExcelServiceProvider::class,
 ],
@@ -155,44 +175,68 @@ $writer->save('large_output.xlsx');
 'aliases' => [
     'LkExcel' => LkExcel\LkExportExcel\Integration\Laravel\Facades\LkExcel::class,
 ],
-
-// 2. 使用Facade
-use LkExcel;
-
-// 从Collection导出
-LkExcel::fromCollection(collect($users), 'users.xlsx');
-
-// 从Eloquent查询导出
-LkExcel::fromQuery(User::where('active', true), 'active_users.xlsx');
-
-// 直接下载
-LkExcel::download($reportData, 'report.xlsx');
-
-// 批量处理
-$results = LkExcel::batch($files, function($reader, $file) {
-    return $reader->toArray();
-});
 ```
 
-### WebMan集成
+#### 2. 控制器中使用
 
 ```php
-// 1. 在 config/bootstrap.php 中安装
+use LkExcel;
+
+class UserController extends Controller
+{
+    public function export()
+    {
+        // 从Collection导出
+        $users = User::all();
+        return LkExcel::download($users, 'users.xlsx');
+    }
+    
+    public function import(Request $request)
+    {
+        // 导入Excel文件
+        $data = LkExcel::import($request->file('excel'));
+        
+        // 批量插入数据库
+        User::insert($data);
+        
+        return response()->json(['success' => true]);
+    }
+    
+    public function largeExport()
+    {
+        // 大数据导出 - 自动流式处理
+        return LkExcel::fromQuery(
+            User::where('active', true), 
+            'active_users.xlsx'
+        );
+    }
+}
+```
+
+### WebMan
+
+#### 1. 配置安装
+
+```php
+// config/bootstrap.php
 use LkExcel\LkExportExcel\Integration\WebMan\LkExcelPlugin;
 
 LkExcelPlugin::install([
-    'memory_limit' => 64 * 1024 * 1024,
     'temp_dir' => runtime_path('excel_temp'),
 ]);
+```
 
-// 2. 在控制器中使用
-class UserController 
+#### 2. 控制器使用
+
+```php
+class ExportController
 {
     public function export(): Response
     {
+        $users = User::select();
+        
         $response = LkExcelPlugin::downloadExcel($users, 'users.xlsx', [
-            'headers' => ['ID', '姓名', '邮箱'],
-            'header_style' => ['font' => ['bold' => true]]
+            'headers' => ['ID', '姓名', '邮箱', '创建时间']
         ]);
         
         return new Response(
@@ -204,26 +248,40 @@ class UserController
     
     public function import(Request $request): Response 
     {
-        $reader = LkExcelPlugin::readFromUpload($request->file('excel'));
+        $file = $request->file('excel');
+        $reader = LkExcelPlugin::readFromUpload($file);
         $data = $reader->headers(true)->toArray();
-        // 处理数据...
+        
+        // 处理导入数据
+        foreach ($data as $row) {
+            User::create($row);
+        }
+        
+        return json(['status' => 'success']);
     }
 }
 ```
 
-### ThinkPHP集成
+### ThinkPHP
+
+#### 1. 服务注册
 
 ```php
-// 1. 在服务提供者中注册
+// 在启动文件中注册
 use LkExcel\LkExportExcel\Integration\ThinkPHP\LkExcelService;
 
 LkExcelService::register();
+```
 
-// 2. 在控制器中使用
+#### 2. 控制器使用
+
+```php
 class UserController extends BaseController
 {
     public function export()
     {
+        $users = User::select();
+        
         // 使用助手函数
         $response = lkexcel()->download($users, 'users.xlsx', [
             'headers' => ['ID', '姓名', '邮箱'],
@@ -232,327 +290,169 @@ class UserController extends BaseController
         return download($response['content'], $response['filename']);
     }
     
-    public function exportModel()
+    public function exportFromModel()
     {
         // 直接从模型导出
-        $response = lkexcel()->fromModel($users, 'users.xlsx', [
+        return lkexcel()->fromModel(User::class, 'users.xlsx', [
             'fields' => [
                 'id' => 'ID',
                 'name' => '姓名', 
-                'email' => '邮箱'
+                'email' => '邮箱',
+                'created_at' => '创建时间'
             ]
         ]);
-        
-        return download($response['content'], $response['filename']);
     }
 }
 ```
 
-## 📖 完整功能
+## 🎨 高级功能
 
-### 读取功能
+### 样式设置
 
 ```php
-$reader = LkExportExcel::read('data.xlsx');
+$writer = new Writer();
+$writer->startWrite('styled.xlsx')
+    ->writeHeaders(['产品', '价格', '状态'])
+    ->setHeaderStyle([
+        'font' => ['bold' => true, 'color' => '#FFFFFF'],
+        'fill' => ['color' => '#4472C4']
+    ])
+    ->writeRows([
+        ['商品A', 100, '在售'],
+        ['商品B', 200, '缺货'],
+    ])
+    ->setColumnStyle('B', ['numberFormat' => '¥#,##0.00'])  // 价格格式
+    ->setConditionalStyle('C', [
+        '在售' => ['font' => ['color' => '#008000']],
+        '缺货' => ['font' => ['color' => '#FF0000']]
+    ])
+    ->finishWrite();
+```
 
-// 链式调用
-$data = $reader
-    ->sheet('Sheet1')                 // 选择工作表
-    ->range('A1:C100')               // 设置范围
-    ->headers(true)                  // 包含表头
-    ->limit(50, 10)                  // 限制行数，跳过行数
-    ->filter(fn($row) => !empty($row[0]))  // 过滤空行
-    ->transform(fn($row) => array_map('trim', $row))  // 数据转换
-    ->mapping(['name', 'age', 'email'])  // 列映射
+### 数据验证和转换
+
+```php
+$reader = new Reader();
+$data = $reader->read('data.xlsx')
+    ->validate([
+        'email' => 'email',      // 邮箱验证
+        'age' => 'numeric',      // 数字验证
+        'phone' => 'phone'       // 手机号验证
+    ])
+    ->transform([
+        'date' => fn($value) => date('Y-m-d', strtotime($value)),
+        'price' => fn($value) => floatval(str_replace(['¥', ','], '', $value))
+    ])
     ->toArray();
+```
 
-// 多种输出方式
-$array = $reader->toArray();         // 转为数组
-$iterator = $reader->toIterator();   // 获取迭代器
-$count = $reader->count();           // 获取行数
-$first = $reader->first();           // 获取第一行
-$cell = $reader->cell('A1');         // 获取单元格
-$column = $reader->column(0);        // 获取列数据
+### 进度监控
 
-// 分块处理
-$reader->chunk(1000, function($batch, $index) {
-    echo "处理批次 {$index}: " . count($batch) . " 行\n";
+```php
+use LkExcel\LkExportExcel\Performance\ProgressReporter;
+
+$writer = new Writer();
+$progress = new ProgressReporter();
+
+$writer->setProgressCallback(function($current, $total) use ($progress) {
+    $progress->update($current, $total);
+    
+    // 自定义进度处理
+    echo "处理进度: " . round($current/$total*100, 2) . "%\n";
 });
 
-// 获取文件信息
-$info = $reader->info();
-// ['path', 'size', 'format', 'sheets', 'rows', 'columns', ...]
+$writer->startWrite('large.xlsx')
+    ->fromDatabase($pdo, 'SELECT * FROM large_table')
+    ->finishWrite();
 ```
 
-### 写入功能
+## 📝 常用示例
+
+### 复杂数据导出
 
 ```php
-$writer = LkExportExcel::write();
+// 多表关联数据导出
+$sql = "
+    SELECT u.name, u.email, d.name as dept_name, u.salary 
+    FROM users u 
+    LEFT JOIN departments d ON u.dept_id = d.id 
+    WHERE u.active = 1 
+    ORDER BY u.created_at DESC
+";
 
-// 基础写入
-$writer
-    ->writeHeaders(['ID', '姓名', '部门', '薪资'])
-    ->writeRow([1, '张三', '技术部', 8500])
-    ->writeRows([
-        [2, '李四', '产品部', 9200],
-        [3, '王五', '设计部', 7800],
-    ]);
-
-// 样式设置
-$writer
-    ->setFont('A1:D1', ['bold' => true, 'size' => 12])
-    ->setFill('A1:D1', ['color' => '#E6E6FA'])
-    ->setBorder('A1:D10', ['style' => 'thin'])
-    ->setColumnWidth('B', 15.0)
-    ->setRowHeight(1, 25.0)
-    ->mergeCells('A1:B1');
-
-// 高级功能
-$writer
-    ->setFormula('E2', '=C2*D2')      // 设置公式
-    ->insertImage('F1', 'logo.png')   // 插入图片
-    ->addDataValidation('C:C', [      // 数据验证
-        'type' => 'list',
-        'values' => ['技术部', '产品部', '设计部']
-    ])
-    ->protect('password123');         // 工作表保护
-
-// 多工作表
-$writer
-    ->createSheet('员工信息')
-    ->createSheet('部门统计')
-    ->sheet('员工信息')
-    ->writeHeaders(['姓名', '部门'])
-    ->writeRows($employees)
-    ->sheet('部门统计')
-    ->writeHeaders(['部门', '人数'])
-    ->writeRows($departments);
-
-// 保存和输出
-$writer->save('output.xlsx');                    // 保存文件
-$writer->download('report.xlsx');               // 浏览器下载
-$content = $writer->getContent();               // 获取内容
+$writer = new Writer();
+$writer->startWrite('user_report.xlsx')
+    ->writeHeaders(['姓名', '邮箱', '部门', '薪资'])
+    ->fromDatabase($pdo, $sql)
+    ->setColumnStyle('D', ['numberFormat' => '¥#,##0.00'])
+    ->finishWrite();
 ```
 
-### 数据转换
+### 错误处理
 
 ```php
-// 格式转换
-LkExportExcel::read('data.csv')->save('data.xlsx');
-LkExportExcel::read('data.xlsx')->save('data.json');
-
-// 自定义转换
-$converter = LkExportExcel::convert('xlsx', 'csv')
-    ->setOptions(['delimiter' => ';'])
-    ->transform(function($data) {
-        // 自定义数据转换
-        return array_map('strtoupper', $data);
-    });
-
-$converter->convertFile('input.xlsx', 'output.csv');
-```
-
-## 🚄 性能对比
-
-### 基准测试结果
-
-| 测试项目 | lkExportExcel | PhpSpreadsheet | 性能提升 |
-|---------|---------------|----------------|----------|
-| 读取10K行 | 0.12s | 0.65s | **5.4x faster** |
-| 写入10K行 | 0.18s | 0.89s | **4.9x faster** |
-| 内存使用(100MB文件) | 8MB | 45MB | **5.6x less** |
-| 内存使用(1GB文件) | 12MB | 380MB | **31.7x less** |
-
-### 内存优化
-
-```php
-// 传统方式 - 内存随文件增长
-$data = file_get_contents('large.xlsx'); // 500MB内存
-$spreadsheet = PhpSpreadsheet::load($data); // 1.2GB内存
-
-// lkExportExcel - 恒定内存使用
-foreach (LkExportExcel::read('large.xlsx')->stream() as $row) {
-    // 始终 < 10MB内存
-    processRow($row);
-}
-```
-
-## 🧪 测试和质量
-
-### 测试覆盖
-- **148个测试** - 100%通过率
-- **2,666个断言** - 深度功能验证
-- **100%覆盖率** - 所有代码路径测试
-
-### 运行测试
-
-```bash
-# 安装依赖
-composer install
-
-# 运行测试
-composer test
-
-# 性能基准测试
-composer benchmark
-
-# 代码质量检查
-composer analyse
-```
-
-### 性能监控
-
-```php
-// 获取性能统计
-$stats = LkExportExcel::read('data.xlsx')->getStats();
-/*
-[
-    'rows_read' => 10000,
-    'parse_time' => 0.123,
-    'memory_used' => 8388608,
-    'memory_stats' => [...],
-    'monitor_report' => [...],
-]
-*/
-
-// 内存使用监控
-$reader = LkExportExcel::read('large.xlsx');
-foreach ($reader->stream() as $row) {
-    if ($reader->getMemoryUsage() > 50 * 1024 * 1024) {
-        // 内存使用超过50MB时的处理
-        $reader->optimize();
-    }
+try {
+    $reader = new Reader();
+    $data = $reader->read('data.xlsx')->toArray();
+} catch (\LkExcel\LkExportExcel\Exception\FileNotFoundException $e) {
+    echo "文件不存在: " . $e->getMessage();
+} catch (\LkExcel\LkExportExcel\Exception\InvalidFormatException $e) {
+    echo "文件格式错误: " . $e->getMessage();
+} catch (\LkExcel\LkExportExcel\Exception\MemoryLimitException $e) {
+    echo "内存不足: " . $e->getMessage();
 }
 ```
 
 ## 🔧 配置选项
 
-### 全局配置
-
 ```php
+// 全局配置
 LkExportExcel::config([
-    'memory_limit' => 64 * 1024 * 1024,  // 64MB内存限制
-    'enable_monitoring' => true,          // 启用性能监控
-    'temp_dir' => '/tmp',                // 临时目录
-    'buffer_size' => 8192,               // 缓冲区大小
-    'strict_types' => false,             // 严格类型检测
+    'default_format' => 'xlsx',
+    'memory_limit' => 128 * 1024 * 1024,  // 128MB
+    'temp_directory' => sys_get_temp_dir(),
+    'auto_detect_format' => true,
+    'buffer_size' => 1000,  // 缓冲行数
+]);
+
+// 读取配置
+$reader = new Reader([
+    'headers' => true,
+    'skip_empty_rows' => true,
+    'trim_whitespace' => true,
+]);
+
+// 写入配置  
+$writer = new Writer([
+    'auto_size_columns' => true,
+    'include_bom' => false,  // CSV BOM
+    'compression_level' => 6,  // XLSX压缩级别
 ]);
 ```
 
-### Laravel配置
+## 📚 更多示例
 
-```php
-// config/lkexcel.php
-return [
-    'memory' => [
-        'limit' => 67108864,  // 64MB
-    ],
-    'performance' => [
-        'enabled' => true,
-        'slow_query_threshold' => 1.0,
-    ],
-    'type_detection' => [
-        'strict_mode' => false,
-    ],
-    'object_pool' => [
-        'default_size' => 50,
-    ],
-];
-```
+项目包含13个实用示例，涵盖各种使用场景：
 
-## 🏗️ 架构设计
+- **基础操作**: 简单读写、格式转换
+- **数据库集成**: 导入导出、大数据处理  
+- **性能测试**: 百万数据、内存监控
+- **框架集成**: Laravel、WebMan、ThinkPHP
+- **高级功能**: 样式设置、数据验证
 
-### 核心组件
-
-```
-src/
-├── Core/              # 核心引擎
-│   ├── StreamParser.php      # 流式解析器
-│   └── ConcurrentProcessor.php # 并发处理器
-├── Memory/            # 内存管理
-│   ├── MemoryManager.php     # 内存管理器
-│   └── ObjectPool.php        # 对象池
-├── Performance/       # 性能监控
-│   ├── PerformanceMonitor.php # 性能监控器
-│   └── BenchmarkSuite.php     # 基准测试
-├── Format/            # 格式处理
-│   └── FormatDetector.php     # 格式检测器
-├── Type/              # 类型系统
-│   └── TypeDetector.php       # 类型检测器
-├── Style/             # 样式系统
-│   └── StyleManager.php       # 样式管理器
-├── Formula/           # 公式引擎
-│   └── FormulaEngine.php      # 公式引擎
-├── Api/               # API接口
-│   ├── Reader.php             # 读取器
-│   ├── Writer.php             # 写入器
-│   ├── ReaderInterface.php    # 读取器接口
-│   └── WriterInterface.php    # 写入器接口
-└── Integration/       # 框架集成
-    └── Laravel/               # Laravel集成
-        ├── LkExcelServiceProvider.php
-        └── Facades/LkExcel.php
-```
-
-### 设计模式
-
-- **流式处理**: SAX解析模式，事件驱动
-- **对象池**: 减少对象创建开销
-- **工厂模式**: 统一对象创建
-- **策略模式**: 可插拔的格式处理器
-- **观察者模式**: 性能监控和事件处理
-- **门面模式**: Laravel Facade支持
-
-## 🤝 贡献指南
-
-### 开发环境
-
-```bash
-# 克隆仓库
-git clone https://github.com/longkedev/lk-export-excel.git
-cd lk-export-excel
-
-# 安装依赖
-composer install
-
-# 运行测试
-composer test
-```
-
-### 代码规范
-
-- 遵循PSR-12代码风格
-- 100%测试覆盖率
-- 性能优先设计
-- 完整的文档注释
-
-### 提交流程
-
-1. Fork项目
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送分支 (`git push origin feature/AmazingFeature`)
-5. 创建Pull Request
+查看 `examples/` 目录获取完整示例代码。
 
 ## 📄 许可证
 
-本项目采用 [MIT许可证](LICENSE)
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
 
-## 🙏 致谢
+## 🤝 贡献
 
-- [PhpSpreadsheet](https://github.com/PHPOffice/PhpSpreadsheet) - 优秀的Excel处理库
-- [Laravel](https://laravel.com/) - 优雅的PHP框架
-- PHP社区的所有贡献者
+欢迎贡献代码！请先阅读 [贡献指南](CONTRIBUTING.md)。
 
 ## 📞 支持
 
-
-- **文档**: [Wiki页面](https://github.com/longkedev/lk-export-excel/wiki)
-- **问题反馈**: [Issues](https://github.com/longkedev/lk-export-excel/issues)
-- **功能请求**: [Feature Requests](https://github.com/longkedev/lk-export-excel/issues)
-
----
-
-**⭐ 如果这个项目对你有帮助，请给个Star支持一下！**
-
-> 高性能 • 低内存 • 易使用 - lkExportExcel，让Excel处理更简单！ 
+- **文档**: [完整文档](docs/)
+- **示例**: [使用示例](examples/)
+- **问题**: [GitHub Issues](https://github.com/lkexcel/lkexportexcel/issues)
+- **讨论**: [GitHub Discussions](https://github.com/lkexcel/lkexportexcel/discussions) 
