@@ -1,0 +1,46 @@
+# Composer
+/vendor/
+composer.lock
+
+# IDE
+/.idea/
+/.vscode/
+/.cursor/
+
+# Testing
+/.phpunit.cache/
+/phpunit.xml.bak
+/junit.xml
+
+# Temporary files
+*.tmp
+*.temp
+/temp/
+demo.xlsx
+test_demo.php
+example.php
+
+# Development files
+开始开发.md
+重构方案.md
+开发进度报告.md
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+/logs/
+
+# Cache
+/cache/
+/.cache/
+
+# Node modules (if any)
+/node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local 
