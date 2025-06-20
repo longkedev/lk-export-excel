@@ -446,7 +446,7 @@ src/
 
 ```bash
 # 克隆仓库
-git clone https://gitee.com/yuwenlwl/lk-export-excel.git
+git clone https://github.com/longkedev/lk-export-excel.git
 cd lk-export-excel
 
 # 安装依赖
@@ -484,9 +484,9 @@ composer test
 ## 📞 支持
 
 
-- **文档**: [Wiki页面](https://gitee.com/yuwenlwl/lk-export-excel/wikis)
-- **问题反馈**: [Issues](https://gitee.com/yuwenlwl/lk-export-excel/issues)
-- **功能请求**: [Feature Requests](https://gitee.com/yuwenlwl/lk-export-excel/issues)
+- **文档**: [Wiki页面](https://github.com/longkedev/lk-export-excel/wiki)
+- **问题反馈**: [Issues](https://github.com/longkedev/lk-export-excel/issues)
+- **功能请求**: [Feature Requests](https://github.com/longkedev/lk-export-excel/issues)
 
 ---
 
