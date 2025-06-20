@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace LkExcel\LkExportExcel\Memory;
 
+use LkExcel\LkExportExcel\Performance\ProgressReporter;
+
 /**
  * 内存管理器
  * 
@@ -13,6 +15,7 @@ namespace LkExcel\LkExportExcel\Memory;
  * - 自动垃圾回收
  * - 对象池管理
  * - 内存泄漏检测
+ * - 与ProgressReporter集成
  */
 class MemoryManager
 {
@@ -42,14 +45,140 @@ class MemoryManager
     
     // 检查间隔（秒）
     private int $checkInterval = 1;
+    
+    // ProgressReporter集成
+    private ?ProgressReporter $progressReporter = null;
+    private bool $silentMode = false;
 
-    public function __construct(int $memoryLimit = 67108864) // 64MB默认
+    public function __construct(int $memoryLimit = 0) // 0表示自动检测
     {
-        $this->memoryLimit = $memoryLimit;
+        // 🚀 智能内存限制：根据系统可用内存自动调节
+        if ($memoryLimit === 0) {
+            $this->memoryLimit = $this->calculateOptimalMemoryLimit();
+        } else {
+            $this->memoryLimit = $memoryLimit;
+        }
+        
         $this->lastCheckTime = time();
+        
+        // 检测是否在测试环境
+        $this->silentMode = defined('PHPUNIT_COMPOSER_INSTALL') || 
+                           (isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] === 'test');
         
         // 初始化对象池
         $this->initializeObjectPools();
+    }
+    
+    /**
+     * 计算最优内存限制
+     * 基于系统可用内存和PHP配置自动调节
+     */
+    private function calculateOptimalMemoryLimit(): int
+    {
+        // 获取PHP内存限制
+        $phpMemoryLimit = $this->parseMemoryLimit(ini_get('memory_limit'));
+        
+        // 🚀 智能内存调优：根据需要自动提高PHP内存限制
+        $recommendedLimit = $this->getRecommendedMemoryLimit();
+        
+        // 如果当前PHP限制小于推荐值，尝试自动提高
+        if ($phpMemoryLimit !== -1 && $phpMemoryLimit < $recommendedLimit) {
+            $this->autoAdjustPHPMemoryLimit($recommendedLimit);
+            $phpMemoryLimit = $this->parseMemoryLimit(ini_get('memory_limit'));
+        }
+        
+        // 如果PHP内存限制是-1（无限制），使用推荐值
+        if ($phpMemoryLimit === -1) {
+            return $recommendedLimit;
+        }
+        
+        // 使用PHP内存限制的80%作为我们的工作内存
+        $workingMemory = (int)($phpMemoryLimit * 0.8);
+        
+        // 确保最小32MB
+        return max(32 * 1024 * 1024, $workingMemory);
+    }
+    
+    /**
+     * 获取推荐的内存限制（基于数据量估算）
+     */
+    private function getRecommendedMemoryLimit(): int
+    {
+        // 基础内存需求：128MB
+        $baseMemory = 128 * 1024 * 1024;
+        
+        // 如果检测到大数据量，增加内存需求
+        // 这里可以根据文件大小、行数等进行估算
+        $currentUsage = memory_get_usage(true);
+        
+        if ($currentUsage > 50 * 1024 * 1024) {
+            // 当前使用超过50MB，可能是大数据处理，推荐512MB
+            return 512 * 1024 * 1024;
+        }
+        
+        return $baseMemory;
+    }
+    
+    /**
+     * 自动调整PHP内存限制
+     */
+    private function autoAdjustPHPMemoryLimit(int $targetLimit): void
+    {
+        $targetLimitMB = ceil($targetLimit / 1024 / 1024);
+        
+        // 尝试设置新的内存限制
+        $oldLimit = ini_get('memory_limit');
+        $newLimit = $targetLimitMB . 'M';
+        
+        if (ini_set('memory_limit', $newLimit) !== false) {
+            if (!$this->silentMode) {
+                echo "🚀 自动调优: PHP内存限制已从 {$oldLimit} 提高到 {$newLimit}\n";
+            }
+        } else {
+            if (!$this->silentMode) {
+                echo "⚠️  无法自动调整内存限制，请手动增加 memory_limit\n";
+            }
+        }
+    }
+    
+    /**
+     * 解析内存限制字符串
+     */
+    private function parseMemoryLimit(string $memoryLimit): int
+    {
+        if ($memoryLimit === '-1') {
+            return -1;
+        }
+        
+        $unit = strtolower(substr($memoryLimit, -1));
+        $value = (int)$memoryLimit;
+        
+        switch ($unit) {
+            case 'g':
+                return $value * 1024 * 1024 * 1024;
+            case 'm':
+                return $value * 1024 * 1024;
+            case 'k':
+                return $value * 1024;
+            default:
+                return $value;
+        }
+    }
+
+    /**
+     * 设置ProgressReporter
+     */
+    public function setProgressReporter(?ProgressReporter $progressReporter): void
+    {
+        $this->progressReporter = $progressReporter;
+    }
+
+    /**
+     * 设置静默模式
+     */
+    public function setSilentMode(bool $silent): void
+    {
+        $this->silentMode = $silent;
     }
 
     /**
@@ -70,13 +199,24 @@ class MemoryManager
         
         $usageRatio = $currentUsage / $this->memoryLimit;
         
+        // 更新ProgressReporter（如果存在）
+        if ($this->progressReporter) {
+            $this->progressReporter->updateMemory($currentUsage, memory_get_peak_usage(true));
+        }
+        
+        // 如果内存使用率超过90%，立即进行紧急清理
+        if ($usageRatio >= 0.9) {
+            $this->emergencyCleanup();
+            return false;
+        }
+        
         // 如果超过清理阈值，需要立即清理
         if ($usageRatio >= $this->cleanupThreshold) {
             $this->forceGarbageCollection();
             return false;
         }
         
-        // 如果超过警告阈值，记录警告
+        // 如果超过警告阈值，记录警告（但不再直接输出）
         if ($usageRatio >= $this->warningThreshold) {
             $this->logMemoryWarning($currentUsage, $usageRatio);
         }
@@ -139,6 +279,12 @@ class MemoryManager
         // 检查池子是否已满
         if (count($pool['objects']) >= $pool['max_size']) {
             return; // 池子已满，丢弃对象
+        }
+        
+        // 内存安全检查 - 添加内存检查以避免分配失败
+        if (memory_get_usage(true) > $this->memoryLimit * 0.9) {
+            // 接近内存限制时不再向池中添加对象
+            return;
         }
         
         // 重置对象状态（如果有重置方法）
@@ -215,11 +361,21 @@ class MemoryManager
             'limit' => $this->memoryLimit,
             'limit_mb' => round($this->memoryLimit / 1024 / 1024, 2),
             'limit_formatted' => $this->formatBytes($this->memoryLimit),
-            'usage_ratio' => $currentUsage / $this->memoryLimit,
+            'usage_ratio' => (float)($currentUsage / $this->memoryLimit),
             'gc_count' => $this->gcCount,
             'object_pools' => $this->getObjectPoolStats(),
             'leak_detection' => $this->detectMemoryLeaks(),
         ];
+    }
+
+    /**
+     * 获取峰值内存使用量
+     * 
+     * @return int 峰值内存使用量（字节）
+     */
+    public function getPeakUsage(): int
+    {
+        return memory_get_peak_usage(true);
     }
 
     /**
@@ -249,13 +405,31 @@ class MemoryManager
      */
     private function initializeObjectPools(): void
     {
-        // 为常用对象类型创建对象池
+        // 为常用对象类型创建对象池 - 减少池大小以节省内存
         $this->objectPools = [
-            'array' => ['objects' => [], 'max_size' => 100],
-            'stdClass' => ['objects' => [], 'max_size' => 50],
-            'DOMDocument' => ['objects' => [], 'max_size' => 10],
-            'XMLReader' => ['objects' => [], 'max_size' => 5],
+            'array' => ['objects' => [], 'max_size' => 50],
+            'stdClass' => ['objects' => [], 'max_size' => 25],
+            'DOMDocument' => ['objects' => [], 'max_size' => 5],
+            'XMLReader' => ['objects' => [], 'max_size' => 3],
         ];
+    }
+
+    /**
+     * 紧急内存清理
+     */
+    private function emergencyCleanup(): void
+    {
+        // 清空所有对象池
+        foreach ($this->objectPools as $type => &$pool) {
+            $pool['objects'] = [];
+        }
+        
+        // 强制执行垃圾回收多次
+        for ($i = 0; $i < 3; $i++) {
+            gc_collect_cycles();
+        }
+        
+        $this->gcCount += 3;
     }
 
     /**
@@ -297,8 +471,19 @@ class MemoryManager
      */
     private function logMemoryWarning(int $usage, float $ratio): void
     {
-        // TODO: 实现日志记录功能
-        // 当前只是简单的错误日志
+        // 在测试环境或静默模式中禁用内存警告日志输出
+        if ($this->silentMode) {
+            return;
+        }
+        
+        // 如果有ProgressReporter，通过它处理警告
+        if ($this->progressReporter) {
+            // ProgressReporter的updateMemory已经处理了警告显示
+            return;
+        }
+        
+        // 只有在没有ProgressReporter时才使用传统的error_log
+        // 但避免频繁输出，只记录到日志，不输出到屏幕
         error_log(sprintf(
             "lkExportExcel 内存警告: 使用 %s MB (%.1f%% of limit)",
             round($usage / 1024 / 1024, 2),
@@ -314,11 +499,9 @@ class MemoryManager
      */
     private function logGarbageCollection(int $collected, int $newUsage): void
     {
-        error_log(sprintf(
-            "lkExportExcel 垃圾回收: 回收 %d 个对象，当前使用 %s MB",
-            $collected,
-            round($newUsage / 1024 / 1024, 2)
-        ));
+        // 已禁用垃圾回收日志 - 因为PHP GC对XMLReader/字符串驻留无效
+        // 只有分段处理（重建实例）才能真正释放内存
+        return;
     }
 
     /**
